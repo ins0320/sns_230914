@@ -3,7 +3,7 @@
 <div class="h-100 header bg-info d-flex justify-content-between">
 	<%-- logo --%>
 	<div class="logo d-flex align-items-center">
-		<h1 class="text-white ml-3">Marondalgram</h1>
+		<h1 class="text-white ml-3">Feedgram</h1>
 	</div>
 	
 	<%-- 로그인 정보 --%>

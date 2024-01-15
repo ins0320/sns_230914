@@ -57,7 +57,7 @@
 			$("#idCheckDuplicated").addClass("d-none");
 			$("#idCheckOk").addClass("d-none");
 			
-			let loginId = $("#loginId").val();
+			let loginId = $("#loginId").val().trim();
 			if (loginId.length < 4) {
 				$("#idCheckLength").removeClass("d-none");
 				return;
@@ -75,6 +75,7 @@
 					alert(data.error_message);
 				}
 			});
+			
 		});
 		
 		// 회원가입
@@ -122,7 +123,7 @@
 			}
 			
 			
-			alert("회원가입");
+			//alert("회원가입");
 			
 			// AJAX: 화면 이동 되지 않음(콜백함수에서 이동) 응답값 JSON
 			let url = $(this).attr("action");
