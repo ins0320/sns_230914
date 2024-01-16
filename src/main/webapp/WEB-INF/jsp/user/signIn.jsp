@@ -27,3 +27,39 @@
 		</form>
 	</div>
 </div>
+<script>
+	$(document).ready(function(){
+		// 로그인
+		$("#loginForm").on('submit', function(e){
+			e.preventDefault(); //form 중단(화면 이동 방지)
+			// alert("로그인");
+			let loginId = $("input[name = loginId]").val().trim();
+			let password = $("input[name = password]").val().trim();
+			
+			if(!loginId){
+				alert("아이디를 입력하세요.");
+				return false;
+			}
+			
+			if(!password){
+				alert("비밀번호를 입력하세요.");
+				return false;
+			}
+			
+			let url = $(this).attr('action');
+			let params = $(this).serialize();
+			
+			
+			$.post(url, params)
+			.done(function(data){
+				if(data.result == "성공"){
+					// 로그인 성공 시 글 목록으로 이동한다.
+					location.href="/post/post-list-view";
+				} else{
+					alert(data.error_message);
+				}
+			});
+		});
+		
+	});
+</script>
