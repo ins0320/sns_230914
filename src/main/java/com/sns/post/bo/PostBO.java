@@ -14,7 +14,6 @@ public class PostBO {
 	@Autowired
 	private PostMapper postMapper;
 	
-	public List<Post> getPostByUserId(int userId) {
-		return postMapper.selectPostByUserId(userId);
+	public List<Post> getPosList(){
 	}
 }
