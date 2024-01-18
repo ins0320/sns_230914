@@ -14,22 +14,24 @@
 				</div>
 			</div>	
 		</c:if>
-		<div class="d-flex justify-content-between">
-			<b>글쓴이</b>
-			<i class="bi bi-three-dots"></i>
-		</div>
-		<div>
-			<img src="https://cdn.pixabay.com/photo/2023/10/23/17/10/landscape-8336496_640.jpg">
-		</div>
-		<div>
-			<img src="https://www.iconninja.com/files/527/809/128/heart-icon.png" width = 20>
-			좋아요 11개
-		</div>
-		<c:forEach items="${postList}">
-		<div class="d-flex">
-			<b>{}</b>
-			<div>비지도 학슴</div>
-		</div>
+		<!--  피드 -->
+		<c:forEach  var="post" items="${postList }">
+			<div class="d-flex justify-content-between">
+				<b>글쓴이</b>
+				<i class="bi bi-three-dots"></i>
+			</div>
+			<div>
+				<img src="https://cdn.pixabay.com/photo/2023/10/23/17/10/landscape-8336496_640.jpg">
+			</div>
+			<div>
+				<img src="https://www.iconninja.com/files/527/809/128/heart-icon.png" width = 20>
+				좋아요 11개
+			</div>
+
+			<div class="d-flex">
+				<b>{}</b>
+				<div>비지도 학슴</div>
+			</div>
 		</c:forEach>
 	</div>
 </div>
