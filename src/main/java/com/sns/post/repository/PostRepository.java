@@ -1,14 +1,16 @@
 package com.sns.post.repository;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.sns.entity.PostEntity;
-import com.sns.user.entity.UserEntity;
+import com.sns.post.entity.PostEntity;
 
 public interface PostRepository extends JpaRepository<PostEntity, Integer> {
-	// Spring Data JPA
 
-	// null or UserEntity(단건)
-	 public PostEntity findByUserId(int userId);
-
+	// save();
+	
+	public List<PostEntity> findAllByOrderByIdDesc();
+	
+	
 }

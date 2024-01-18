@@ -54,7 +54,7 @@
 			.done(function(data){
 				if(data.result == "성공"){
 					// 로그인 성공 시 글 목록으로 이동한다.
-					location.href="/post/post-list-view";
+					location.href="/timeline/timeline-view";
 				} else{
 					alert(data.error_message);
 				}

@@ -1,6 +1,6 @@
-package com.sns.entity;
+package com.sns.post.entity;
 
-import java.util.Date;
+import java.time.ZonedDateTime;
 
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -17,30 +17,30 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @ToString
-@Getter
-@NoArgsConstructor
 @AllArgsConstructor
-@Builder(toBuilder = true)
+@NoArgsConstructor
+@Getter
+@Builder
 @Table(name = "post")
 @Entity
 public class PostEntity {
-		@Id
-		@GeneratedValue(strategy = GenerationType.IDENTITY)
-		private int id;
-		
-		private int userId;
-		
-		private String subject;
-		
-		private String content;
-		
-		private String imagePath;
-		
-		@UpdateTimestamp
-		@Column(name = "createdAt", updatable = false)
-		private Date createdAt;
-		
-		@UpdateTimestamp
-		@Column(name = "updatedAt")
-		private Date updatedAt;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int id;
+	
+	@Column(name = "userId")
+	private int userId;
+	
+	private String content;
+	
+	@Column(name = "imagePath")
+	private String imagePath;
+	
+	@UpdateTimestamp
+	@Column(name = "createdAt")
+	private ZonedDateTime createdAt;
+	
+	@UpdateTimestamp
+	@Column(name = "updatedAt")
+	private ZonedDateTime updatedAt;
 }
