@@ -37,5 +37,11 @@ public class UserBO {
 	public UserEntity getUserEntityBtLoginIdPassword(String loginId, String password) {
 		return userRepository.findByLoginIdAndPassword(loginId, password);
 	}
+	
+	// id 일치하는 user 가져오기
+	// input: userId   output: UserEntity 
+	public UserEntity getUserEntityById(int id) {
+		return userRepository.findById(id).orElse(null);
+	}
 }
 
