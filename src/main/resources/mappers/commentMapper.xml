@@ -34,7 +34,7 @@
 			`comment`
 	</select>
 	
-	<select id="selectCommentViewListByPostId" resultType="com.sns.comment.domain.Comment" parameterType="int">
+	<select id="selectCommentListByPostId" parameterType="int" resultType="com.sns.comment.domain.Comment">
 		SELECT
 			`id`
 			,`postId`
@@ -45,14 +45,14 @@
 		FROM
 			`comment`
 		WHERE
-			`postId` = ${postId}	
-	
+			`postId` = #{postId}
 	</select>
 	
 	<delete id="deleteCommentById" parameterType="int">
-		DELETE FROM
+		DELETE
+		FROM	
 			`comment`
-		WHERE 	
-			`id` = ${id}	
+		WHERE
+			`id` =  #{id}
 	</delete>
 </mapper>

@@ -46,47 +46,47 @@
 				
 				<%-- 좋아요 --%>
 				<div class="card-like m-3">
-					<a href="#" class="like-btn">
+					<a href="#" class="like-btn" data-post-id="${card.post.id}">
 						<img src="https://www.iconninja.com/files/214/518/441/heart-icon.png" width="18" height="18" alt="empty heart">
 					</a>
-					
-					좋아요 13개
+				
+					좋아요 ${card.likeCount } 개
 				</div>
 				
 				<%-- 글 --%>
 				<div class="card-post m-3">
-					<span class="font-weight-bold">${card.post.userId}</span>
+					<span class="font-weight-bold">${card.user.loginId}</span>
 					<span>${card.post.content}</span>
 				</div>
 				
 				<%-- 댓글 제목 --%>
-				 <div class="card-comment-desc border-bottom">
+				<div class="card-comment-desc border-bottom">
 					<div class="ml-3 mb-1 font-weight-bold">댓글</div>
-				</div> 
+				</div>
 				
 				<%-- 댓글 목록 --%>
-				 <div class="card-comment-list m-2">
-					<%-- 댓글 내용들--%>
+				<div class="card-comment-list m-2">
+					<%-- 댓글 내용들 --%>
 					<c:forEach items="${card.commentList}" var="commentView">
-					<c:if test="${comment.postId eq post.id}">
 					<div class="card-comment m-1">
-						<span class="font-weight-bold" >${commentView.user.loginId}</span>
-						<span>${commentView.comment.content }</span>
+						<span class="font-weight-bold">${commentView.user.loginId}</span>
+						<span>${commentView.comment.content}</span>
 						
-						<!-- 댓글 삭제 버튼 -->
+						<%-- 댓글 삭제 버튼(자신의 댓글만 삭제 버튼 노출) --%>
+						<c:if test="${userId eq commentView.comment.userId}">
 						<a href="#" class="comment-del-btn" data-comment-id="${commentView.comment.id}">
 							<img src="https://www.iconninja.com/files/603/22/506/x-icon.png" width="10" height="10">
 						</a>
+						</c:if>
 					</div>
-					</c:if>
-					</c:forEach> 
+					</c:forEach>
 					
 					<%-- 댓글 쓰기 --%>
 					<div class="comment-write d-flex border-top mt-2">
 						<input type="text" class="form-control border-0 mr-2 comment-input" placeholder="댓글 달기"/> 
 						<button type="button" class="comment-btn btn btn-light" data-user-id="${userId}" data-post-id="${card.post.id}">게시</button>
 					</div>
-				</div> <%--// 댓글 목록 끝 --%> 
+				</div> <%--// 댓글 목록 끝 --%>
 			</div> <%--// 카드1 끝 --%>
 			</c:forEach>
 		</div> <%--// 타임라인 영역 끝  --%>
@@ -180,7 +180,6 @@
 			});  // --- ajax 끝
 		});
 		
-		
 		// 댓글 쓰기
 		$(".comment-btn").on('click', function() {
 			//alert("댓글 쓰기");
@@ -223,7 +222,6 @@
 			});
 		});
 		
-
 		// 댓글 삭제
 		$(".comment-del-btn").on('click', function(e) {
 			e.preventDefault(); // 위로 올라감 방지
@@ -247,5 +245,32 @@
 				}
 			});
 		});
+		
+		 // 좋아요 토글
+		$(".like-btn").on('click', function(e){
+			e.preventDefault(); // 위로 올라감 방지
+			// alert("좋아요");
+			
+			let postId = $(this).data("post-id");
+			// alert(postId);
+			
+			$.ajax({
+				url:"/like/"+ postId             // /like/13
+				, success:function(data){
+					if(data.code == 200){   // 성공
+						location.reload(true); // 새로그침 -> timeLine
+					} else if(data.code == 300){ // 실패
+						// 비로그인
+						alert(data.error_message);
+						locaion.hred="/user/sign-in-view";
+					} 	
+				}
+				, error:function(request, status, error){
+					alert("좋아요를 하는데 실패했습니다.");
+				}
+				
+			});
+			
+		}); 
 	});
 </script>

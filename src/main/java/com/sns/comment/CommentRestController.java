@@ -14,13 +14,20 @@ import com.sns.comment.bo.CommentBO;
 
 import jakarta.servlet.http.HttpSession;
 
-@RestController
 @RequestMapping("/comment")
+@RestController
 public class CommentRestController {
 
 	@Autowired
 	private CommentBO commentBO;
 	
+	/**
+	 * 댓글 쓰기 API
+	 * @param postId
+	 * @param content
+	 * @param session
+	 * @return
+	 */
 	@PostMapping("/create")
 	public Map<String, Object> create(
 			@RequestParam("postId") int postId,
@@ -42,6 +49,7 @@ public class CommentRestController {
 		result.put("result", "성공");
 		return result;
 	}
+	
 	@DeleteMapping("/delete")
 	public Map<String, Object> delete(
 			@RequestParam("commentId") int commentId,
