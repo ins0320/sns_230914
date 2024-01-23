@@ -74,7 +74,7 @@
 						<span>${commentView.comment.content }</span>
 						
 						<!-- 댓글 삭제 버튼 -->
-						<a href="#" class="comment-del-btn" data-comment-id="${commentId}">
+						<a href="#" class="comment-del-btn" data-comment-id="${commentView.comment.id}">
 							<img src="https://www.iconninja.com/files/603/22/506/x-icon.png" width="10" height="10">
 						</a>
 					</div>
@@ -223,25 +223,27 @@
 			});
 		});
 		
-		$(".comment-del-btn").on('click', function(e){
-			e.preventDefault();
-			// alert("댓글삭제");
+
+		// 댓글 삭제
+		$(".comment-del-btn").on('click', function(e) {
+			e.preventDefault(); // 위로 올라감 방지
+			
 			let commentId = $(this).data("comment-id");
-			alert(commentId);
+			//alert(commentId);
 			
 			$.ajax({
-				type:"post"
+				type:"DELETE"
 				, url:"/comment/delete"
-				, data:{"commentId": commentId}
-				, success: function(data){
-					if (data.code == 200){
+				, data:{"commentId":commentId}
+				, success:function(data) {
+					if (data.code == 200) {
 						location.reload(true);
-					}else if(data.code == 500){
-						alert(data.errorMessage);
+					} else {
+						alert(data.error_message);
 					}
 				}
-				, error: function(request, status, error) {
-					alert("댓글 삭제에 실패했습니다.");
+				, error:function(request, status, error) {
+					alert("댓글 삭제 하는데 실패했습니다.");
 				}
 			});
 		});

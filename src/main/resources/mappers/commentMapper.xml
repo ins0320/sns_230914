@@ -49,10 +49,10 @@
 	
 	</select>
 	
-	<delete id="deleteComment" parameterType="int">
+	<delete id="deleteCommentById" parameterType="int">
 		DELETE FROM
 			`comment`
 		WHERE 	
-			`commentId` = ${id}	
+			`id` = ${id}	
 	</delete>
 </mapper>
