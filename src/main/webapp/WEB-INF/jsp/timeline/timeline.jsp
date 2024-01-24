@@ -46,11 +46,17 @@
 				
 				<%-- 좋아요 --%>
 				<div class="card-like m-3">
-					<a href="#" class="like-btn" data-post-id="${card.post.id}">
-						<img src="https://www.iconninja.com/files/214/518/441/heart-icon.png" width="18" height="18" alt="empty heart">
-					</a>
-				
-					좋아요 ${card.likeCount } 개
+					<c:if test="${card.filledLike eq false}">
+						<a href="#" class="like-btn" data-post-id="${card.post.id}">
+							<img src="https://www.iconninja.com/files/214/518/441/heart-icon.png" width="18" height="18" alt="empty heart">
+						</a>
+					</c:if>
+					<c:if test="${ card.filledLike eq true }">
+						<a href="#" class="like-btn" data-post-id="${card.post.id}">
+							<img src="https://www.iconninja.com/files/527/809/128/heart-icon.png" width="18" height="18" alt="filled heart">
+						</a>
+					</c:if>
+					좋아요 ${card.likeCount} 개
 				</div>
 				
 				<%-- 글 --%>
@@ -262,7 +268,7 @@
 					} else if(data.code == 300){ // 실패
 						// 비로그인
 						alert(data.error_message);
-						locaion.hred="/user/sign-in-view";
+						locaion.href="/user/sign-in-view";
 					} 	
 				}
 				, error:function(request, status, error){

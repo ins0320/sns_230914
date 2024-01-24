@@ -28,7 +28,7 @@
  			`like`	
  	</select>
  	
- 	<select id="selectLikeCountByPostIdUserId" resultType="int">
+ 	<!-- <select id="selectLikeCountByPostIdUserId" resultType="int">
  		SELECT
  			COUNT(1)
  		FROM
@@ -46,8 +46,21 @@
  			`like`
  		WHERE
  			`postId` = #{postId}	
- 	</select>
+ 	</select> -->
  	
+ 	<!-- like count 쿼리 하나로 합치기 -->
+ 	<select id="selectLikeCountByPostIdOrUserId" parameterType="map" resultType="int">
+ 		SELECT
+ 			COUNT(1)
+ 		FROM
+ 			`like`
+ 		WHERE
+ 			`postId` = #{postId}			
+ 			<if test="userId != null">
+	 		AND
+	 			`userId` = #{userId}
+ 			</if>
+ 	</select>
  	
  	<delete id="deleteLikeByPostIdUserId">
  		DELETE FROM

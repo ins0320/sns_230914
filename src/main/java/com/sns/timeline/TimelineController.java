@@ -14,6 +14,8 @@ import com.sns.post.entity.PostEntity;
 import com.sns.timeline.bo.TimelineBO;
 import com.sns.timeline.domain.CardView;
 
+import jakarta.servlet.http.HttpSession;
+
 @Controller
 public class TimelineController {
 
@@ -21,9 +23,10 @@ public class TimelineController {
 	private TimelineBO timelineBO;
 	
 	@GetMapping("/timeline/timeline-view")
-	public String timelineView(Model model) {
+	public String timelineView(Model model, HttpSession session) {
 
-		List<CardView> cardViewList = timelineBO.generateCardViewList(); // view용 객체 가공
+		Integer userId = (Integer)session.getAttribute("userId");
+		List<CardView> cardViewList = timelineBO.generateCardViewList(userId); // view용 객체 가공
 		
 		model.addAttribute("cardViewList", cardViewList);
 				
