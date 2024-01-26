@@ -9,12 +9,16 @@ import java.nio.file.Paths;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Component
 public class FileManagerService {
 
 	// 실제 업로드가 된 이미지가 저장될 경로(서버)
-	public static final String FILE_UPLOAD_PATH = "D:\\김유정\\6_springProject\\sns\\sns_workspace\\images/";
-	//public static final String FILE_UPLOAD_PATH = "C:\\Users\\dhkim\\OneDrive\\바탕 화면\\yj\\SPRING\\SNS\\workspace\\images/";
+	//public static final String FILE_UPLOAD_PATH = "D:\\김유정\\6_springProject\\sns\\sns_workspace\\images/";
+	public static final String FILE_UPLOAD_PATH = "C:\\Users\\yoojung0318\\megastudy\\spring_project\\SNS\\sns_workspace\\images/";
+	
 	
 
 	// input:File 원본, userLoginId(폴더명)  output: 이미지 경로
@@ -45,5 +49,32 @@ public class FileManagerService {
 			// 주소는 이렇게 될 것이다.(예언)
 			// /images/aaaa_1823478932/sun.png
 			return "/images/" + directoryName + "/" + file.getOriginalFilename();
+		}
+		// 파일 삭제 메소드
+		// input: imagePath
+		// output: void
+		public void deleteFile(String imagePath) { // imagePath: /images/aaaa_1823478932/sun.png
+			// D:\\김유정\\6_springProject\\sns\\sns_workspace\\/images/aaaa_1823478932/sun.png
+			// 주소에 겹치는 /images/ 를 제거한다.
+
+			Path path = Paths.get(FILE_UPLOAD_PATH + imagePath.replace("/images/", ""));
+			if (Files.exists(path)) { // 이미지가 존재하는가?
+				// 이미지 삭제
+				try {
+					Files.delete(path);
+				} catch (IOException e) {
+					log.info("###[FileManagerService 이미지 삭제 실패] imagePath:{}", imagePath);
+				}
+
+				// 디렉토리(폴더) 삭제
+				path = path.getParent();
+				if (Files.exists(path)) {
+					try {
+						Files.delete(path);
+					} catch (IOException e) {
+						log.info("###[FileManagerService 이미지 폴더 삭제 실패] imagePath:{}", imagePath);
+					}
+				}
+			}
 		}
 }

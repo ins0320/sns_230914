@@ -34,9 +34,12 @@
 				<div class="p-2 d-flex justify-content-between">
 					<span class="font-weight-bold">${card.user.loginId}</span>
 					
-					<a href="#" class="more-btn">
+					<%-- (더보기 ... 버튼) 로그인 된 사람과 글쓴이 정보가 일치할 때 노출 --%>
+					<c:if test="${userId eq card.post.userId}">
+					<a href="#" class="more-btn" data-toggle="modal" data-target="#modal" data-post-id="${card.post.id}">
 						<img src="https://www.iconninja.com/files/860/824/939/more-icon.png" width="30">
 					</a>
+					</c:if>
 				</div>	
 				
 				<%-- 카드 이미지 --%>
@@ -47,16 +50,17 @@
 				<%-- 좋아요 --%>
 				<div class="card-like m-3">
 					<c:if test="${card.filledLike eq false}">
-						<a href="#" class="like-btn" data-post-id="${card.post.id}">
-							<img src="https://www.iconninja.com/files/214/518/441/heart-icon.png" width="18" height="18" alt="empty heart">
-						</a>
+					<a href="#" class="like-btn" data-post-id="${card.post.id}">
+						<img src="https://www.iconninja.com/files/214/518/441/heart-icon.png" width="18" height="18" alt="empty heart">
+					</a>
 					</c:if>
-					<c:if test="${ card.filledLike eq true }">
-						<a href="#" class="like-btn" data-post-id="${card.post.id}">
-							<img src="https://www.iconninja.com/files/527/809/128/heart-icon.png" width="18" height="18" alt="filled heart">
-						</a>
+					<c:if test="${card.filledLike eq true}">
+					<a href="#" class="like-btn" data-post-id="${card.post.id}">
+						<img src="https://www.iconninja.com/files/527/809/128/heart-icon.png" width="18" height="18" alt="filled heart">
+					</a>
 					</c:if>
-					좋아요 ${card.likeCount} 개
+					
+					좋아요 ${card.likeCount}개
 				</div>
 				
 				<%-- 글 --%>
@@ -97,6 +101,25 @@
 			</c:forEach>
 		</div> <%--// 타임라인 영역 끝  --%>
 	</div> <%--// contents-box 끝  --%>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<%-- 
+		modal-sm: 작은 모달창 
+		modal-dialog-centered: 수직 기준 가운데 위치
+	--%>
+	<div class="modal-dialog modal-sm modal-dialog-centered">
+		<div class="modal-content text-center">
+			<div class="py-3 border-bottom">
+    			<a href="#" id="postDelete">삭제하기</a>
+    		</div>
+			<div class="py-3">
+    			<a href="#" data-dismiss="modal">취소하기</a>
+    		</div>
+		</div>
+	</div>
 </div>
 
 <script>
@@ -252,31 +275,76 @@
 			});
 		});
 		
-		 // 좋아요 토글
-		$(".like-btn").on('click', function(e){
-			e.preventDefault(); // 위로 올라감 방지
-			// alert("좋아요");
+		// 좋아요 토글
+		$(".like-btn").on('click', function(e) {
+			e.preventDefault();
+			//alert("좋아요");
 			
 			let postId = $(this).data("post-id");
-			// alert(postId);
+			//alert(postId);
 			
 			$.ajax({
-				url:"/like/"+ postId             // /like/13
-				, success:function(data){
-					if(data.code == 200){   // 성공
-						location.reload(true); // 새로그침 -> timeLine
-					} else if(data.code == 300){ // 실패
-						// 비로그인
+				url:"/like/" + postId    //     /like/13
+				, success:function(data) {
+					if (data.code == 200) {
+						// 성공
+						location.reload(true); // 새로고침 => timeline view화면
+					} else if (data.code == 300) {
+						// 비로그인 시 로그인 페이지로 이동
 						alert(data.error_message);
-						locaion.href="/user/sign-in-view";
-					} 	
+						location.href = "/user/sign-in-view";
+					}
 				}
-				, error:function(request, status, error){
+				, error:function(request, status, error) {
 					alert("좋아요를 하는데 실패했습니다.");
 				}
-				
 			});
+		});
+		
+		// 더보기(...) 클릭 => 모달 띄우기
+		$(".more-btn").on('click', function(e) {
+			e.preventDefault(); // a 태그 올라가는 현상 방지
 			
-		}); 
+			let postId = $(this).data("post-id"); // getting
+			//alert(postId);
+			
+			// 1개로 존재하는 모달에 재활용을 위해 data-post-id를 심는다.
+			$("#modal").data("post-id", postId); // setting
+		});
+		
+		// 모달 안에 있는 삭제하기 클릭
+		$("#modal #postDelete").on('click', function(e) {
+			e.preventDefault(); // a 태그 위로 올라가는 현상 방지
+			
+			let postId = $("#modal").data("post-id");
+			//alert(postId);
+			
+			// 글 삭제
+			$.ajax({
+				type:"delete"
+				, url:"/post/delete"
+				, data: {"postId":postId}
+				, success: function(data) {
+					if (data.code == 200) {
+						location.reload(true);
+					} else {
+						alert(data.error_message);
+					}
+				}
+				, error: function(e) {
+					alert("삭제하는데 실패했습니다. 관리자에게 문의해주세요.");
+				}
+			});
+		});
 	});
 </script>
+
+
+
+
+
+
+
+
+
+
